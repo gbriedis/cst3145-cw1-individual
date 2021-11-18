@@ -19,16 +19,19 @@ new Vue ({
         shoppingCartIcon: "assets/img/shopping-cart.png",
     },
     methods: {
+        // add items to the shopping cart
         addToCart: function(product) {
             product.spaces -= 1;
             var cartObject = {id: product.id, subject: product.subject, location: product.location, price: product.price, image: product.image}
             this.cart.push(cartObject);
         }, 
 
+        // booleon function to show/disable cart
         showCart: function() {
             this.showLesson = false;
         },
 
+        // remove item from cart
         removeItem: function(product) {
             this.lessons.forEach(element => {
                 console.log("test " + element.spaces)
@@ -43,13 +46,16 @@ new Vue ({
 
         },
 
+        // sorting function, takes in which type of sort is needed
         sort(type) {
             this.sortType = type;
         },
 
     },
     computed: {
+        // function to sort lessons  
         sortItems() {
+            // default sort
             if(this.sortType === '') return this.lessons;
 
             if(this.sortType === 'subject') {
@@ -60,6 +66,7 @@ new Vue ({
                 });
             }
             
+            // location sort
             if(this.sortType === 'location') {
                 return this.lessons.sort((a,b) => {
                     if(a.location < b.location) return -1;
@@ -68,6 +75,7 @@ new Vue ({
                 });
             }
 
+            // price sort
             if(this.sortType === 'price') {
                 return this.lessons.sort((a,b) => {
                     if(a.price < b.price) return -1;
@@ -76,6 +84,7 @@ new Vue ({
                 });
             }
 
+            // space sort
             if(this.sortType === 'spaces') {
                 return this.lessons.sort((a,b) => {
                     if(a.spaces < b.spaces) return -1;
