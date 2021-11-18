@@ -22,7 +22,7 @@
             </div>
 
 
-            <!-- sorting -->
+            <!-- sorting buttons -->
             <div id="sort-div">
                 <button @click="sort('subject')">Sort by Subject</button>
                 <button @click="sort('location')">Sort by Location</button>
@@ -31,7 +31,7 @@
             </div>
 
             
-    
+            <!-- lessons -->
             <div id="lesson-container">
                 <div id="lesson-list" v-for="lesson in sortItems">
                     <img class="lesson-image" v-bind:src="lesson.image">
@@ -56,7 +56,7 @@
                 <button @click='removeItem(item)'>Remove Item</button>
             </div>
 
-
+            <!-- checkout form -->
             <div id="checkout-details">
                 <form action="" onsubmit="validate()"> 
                     <input id="name" type="text" placeholder="Name">
