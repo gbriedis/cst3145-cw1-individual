@@ -21,13 +21,27 @@
                 </div>
             </div>
 
-
             <!-- sorting buttons -->
+
+
             <div id="sort-div">
-                <button @click="sort('subject')">Sort by Subject</button>
-                <button @click="sort('location')">Sort by Location</button>
-                <button @click="sort('price')">Sort by Price</button>
-                <button @click="sort('spaces')">Sort by Availability</button>
+                <!-- sort option -->
+                Sort By:
+                <select name="sortType" id="select" v-model="sortType">
+                    <option value="subject">Subject</option>
+                    <option value="location">Location</option>
+                    <option value="price">Price</option>
+                    <option value="spaces">Availability</option>
+                </select>
+
+                <!-- option for ascending/descending -->
+                <select name="ascendingDescending" id="select" v-model="ascendingDescending">
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+
+                <!-- search -->
+                <input type="text" v-model="searchValue" placeholder="Search by Subject" id="search-input"></input>
             </div>
 
             
