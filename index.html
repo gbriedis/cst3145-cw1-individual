@@ -58,11 +58,9 @@
 
             <!-- checkout form -->
             <div id="checkout-details">
-                <form action="" onsubmit="validate()"> 
-                    <input id="name" type="text" placeholder="Name">
-                    <input id="phone-number" type="text" placeholder="Phone Number">
-                    <input type="submit" />
-                </form>
+                <input type="text" v-model.trim=checkout.name placeholder="Name">
+                <input type="text" v-model.trim=checkout.phoneNumber placeholder="Phone Number">
+                <button @click='alertOrder()' :disabled="!validateOrder">Checkout</button>
             </div>
 
         </div>
