@@ -1,4 +1,4 @@
-new Vue ({
+let app = new Vue ({
     el: '#vue',
     data : {
         showLesson:true,
@@ -16,11 +16,15 @@ new Vue ({
     },
     methods: {
         fetchLessonData() {
-            fetch("https://cst3145-cw2-ginters.herokuapp.com/lessons").then((response) => {
-                response.json().then((data) => {
-                    this.lessons = data;
-                });
-            });
+            fetch('https://cst3145-cw2-ginters.herokuapp.com/lessons').then(
+                    function (response) {
+                        response.json().then(
+                            function (json) {
+                                app.lessons = json
+                            }
+                        )
+                    }
+                )
         },
 
         // add items to the shopping cart
