@@ -4,7 +4,7 @@ new Vue ({
         showLesson:true,
         cart:[],
         shoppingCartIcon: "assets/img/shopping-cart.png",
-        lessons: lessonsArray,
+        lessons: {},
         checkout: {
             name: "",
             phoneNumber: "",
@@ -15,6 +15,14 @@ new Vue ({
         searchValue: '',
     },
     methods: {
+        fetchLessonData() {
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/lessons").then((response) => {
+                response.json().then((data) => {
+                    store.lessons = data;
+                });
+            });
+        },
+
         // add items to the shopping cart
         addToCart: function(product) {
             this.cart.push(product);
@@ -125,6 +133,10 @@ new Vue ({
             }
         }
     },
+
+    created: function () {
+        this.fetchLessonData();
+      },
 })
 
 
