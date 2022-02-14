@@ -18,7 +18,7 @@ new Vue ({
         fetchLessonData() {
             fetch("https://cst3145-cw2-ginters.herokuapp.com/lessons").then((response) => {
                 response.json().then((data) => {
-                    store.lessons = data;
+                    this.lessons = data;
                 });
             });
         },
