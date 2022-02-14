@@ -1,10 +1,10 @@
 let app = new Vue ({
-    el: '#vue',
+    el: '#app',
     data : {
         showLesson:true,
         cart:[],
         shoppingCartIcon: "assets/img/shopping-cart.png",
-        lessons: {},
+        lessons: [],
         checkout: {
             name: "",
             phoneNumber: "",
@@ -14,6 +14,10 @@ let app = new Vue ({
         sortType: 'price',
         searchValue: '',
     },
+    created: function () {
+        this.fetchLessonData();
+    },
+
     methods: {
         fetchLessonData() {
             fetch('https://cst3145-cw2-ginters.herokuapp.com/lessons').then(
@@ -138,9 +142,7 @@ let app = new Vue ({
         }
     },
 
-    created: function () {
-        this.fetchLessonData();
-      },
+
 })
 
 
