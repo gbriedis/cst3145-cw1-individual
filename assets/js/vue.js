@@ -20,15 +20,12 @@ let app = new Vue ({
 
     methods: {
         fetchLessonData() {
-            fetch('https://cst3145-cw2-ginters.herokuapp.com/lessons').then(
-                    function (response) {
-                        response.json().then(
-                            function (json) {
-                                app.lessons = json
-                            }
-                        )
-                    }
-                )
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/collection/lessonsDB").then((response) => {
+                response.json().then((data) => {
+                    app.lessons = data;
+                    console.log(data)
+                });
+            });
         },
 
         // add items to the shopping cart
