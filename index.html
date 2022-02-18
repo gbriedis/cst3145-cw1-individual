@@ -9,24 +9,17 @@
     <title>Lessons</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
 
 </head>
 <body>
     
-    <div id="app">
+    <div id="app" class="min-h-screen">
         <!-- shopping cart -->
         <div v-if='showLesson'>
-            <div class="nav" v-if="cart.length >= 1">
-                <p>Items in Cart: {{ cart.length }}</p>
-                <div id="nav-checkout" @click="showCart">
-                    <img v-bind:src="shoppingCartIcon">
-                    <p>Cart</p>
-                </div>
-            </div>
 
             <!-- sorting buttons -->
-
-
             <div id="sort-div">
                 <!-- sort option -->
                 Sort By:
@@ -45,41 +38,59 @@
 
                 <!-- search -->
                 <input type="text" v-model="searchValue" placeholder="Search by Subject" id="search-input"></input>
+                <button @click="showCart" class="inline-block px-6 py-2 float-right bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">Items in Cart: {{ cart.length }}</button>
             </div>
 
             
             <!-- lessons -->
-            <div id="lesson-container">
-                <div id="lesson-list" v-for="lesson in sortItems">
+            <div class="flex flex-col items-center justify-center" id="lesson-container">
+                <div class="block p-6 m-4 rounded-lg shadow-lg bg-white max-w-sm" id="lesson-list" v-for="lesson in sortItems">
                     <img class="lesson-image" v-bind:src="lesson.image">
-                    <p>Subject: {{lesson.topic}}</p>
+                    <p>Subject: {{lesson.subject}}</p>
                     <p>Location: {{lesson.location}}</p>
                     <p>Price: £{{lesson.price}}</p>
                     <p>Space: {{lesson.spaces}}</p>
-                    <button @click='addToCart(lesson)' :disabled="lesson.spaces == 0">Add To Cart</button>
-                    <span id="lesson-sold-out" v-if="lesson.spaces == 0">Sold Out!</span>
+                    <span class="flex flex-col" id="lesson-sold-out" v-if="lesson.spaces == 0">Sold Out!</span>
+                    <button class="inline-block px-6 py-2 mt-2 border-2 border-gray-800 text-gray-800 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" @click='addToCart(lesson)' :disabled="lesson.spaces == 0">Add To Cart</button>
                 </div>
             </div>   
         </div>
 
         <!-- checkout -->
-        <div v-else>
+        <div class="" v-else>
             <p id="back-to-lesson-pointer" @click="showLesson = true"><-- Go Back to Lessons</p>
-            <div id="checkout-container" v-if="cart.length >= 1" v-for="item in cart">
-                <img id="checkout-img" v-bind:src="item.image">
-                <p>Subject: {{item.subject}}</p>
-                <p>Location: {{item.location}}</p>
-                <p>Price: £{{item.price}}</p> 
-                <button @click='removeItem(item)'>Remove Item</button>
-            </div>
+            <div class="flex">
+                <div class="w-6/12 h-auto flex-col my-0.5 mx-auto flex justify-center border-gray-800">
+                    <div class="block p-6 m-4 rounded-lg shadow-lg bg-white flex justify-center" v-if="cart.length >= 1" v-for="item in cart">
+                        <img id="checkout-img" v-bind:src="item.image">
+                        <p class="p-3">Subject: {{item.subject}}</p>
+                        <p class="p-3">Location: {{item.location}}</p>
+                        <p class="p-3">Price: £{{item.price}}</p> 
+                        <button class="inline-block px-6 py-1 border-2 border-gray-800 text-gray-800 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out" @click='removeItem(item)'>Remove Item</button>
+                    </div>
+                </div>
 
-            <!-- checkout form -->
-            <div id="checkout-details">
-                <input type="text" v-model.trim=checkout.name placeholder="Name">
-                <input type="text" v-model.trim=checkout.phoneNumber placeholder="Phone Number">
-                <button @click='alertOrder()' :disabled="!validateOrder">Checkout</button>
+            <div class="w-6/12 my-0.5 mx-auto flex justify-center border-gray-800">
+                <form @submit.prevent="alertOrder()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 my-8">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                        <input v-model.trim=order.email class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Email">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">First Name</label>
+                        <input v-model.trim=order.firstName class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstName" type="text" placeholder="First Name">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="phoneNumber">Phone Number</label>
+                        <input v-model.trim=order.phoneNumber class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phoneNumber" type="text" placeholder="Phone Number">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="inline-block px-6 py-2 float-right bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">Checkout</button>
+                    </div>
+                </form>
             </div>
-
+        </div>
+            
         </div>
         
 

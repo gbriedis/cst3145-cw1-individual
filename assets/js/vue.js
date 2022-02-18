@@ -5,25 +5,30 @@ let app = new Vue ({
         cart:[],
         shoppingCartIcon: "assets/img/shopping-cart.png",
         lessons: [],
-        checkout: {
-            name: "",
+        newSpaces: {
+            lessonID: "",
+            spaces: 0
+        },
+        order: {
+            email: "",
+            firstName: "",
             phoneNumber: "",
-            correct: false
+            lessonID: "",
+            spaces: 0,
         },
         ascendingDescending: 'ascending',
         sortType: 'price',
         searchValue: '',
     },
-    created: function () {
-        this.fetchLessonData();
-    },
+    // created: function () {
+    //     this.fetchLessonData();
+    // },
 
     methods: {
         fetchLessonData() {
             fetch("https://cst3145-cw2-ginters.herokuapp.com/collection/lessonsDB").then((response) => {
                 response.json().then((data) => {
                     app.lessons = data;
-                    console.log(data)
                 });
             });
         },
@@ -51,45 +56,69 @@ let app = new Vue ({
             this.sortType = type;
         },
 
-        // alert for order completed
+        // post order to placedOrderDB (stores email, first name, last name and object of order details)
         alertOrder() {
-            if(this.checkout.correct == true) {
-                if(this.cart.length >= 1) {
-                    alert("Order Completed")
-                    this.cart = []
-                }
-                else {
-                    alert("Add items to the cart")
-                }
+            let cartID = [], spaces = []
+            this.cart.forEach(element => {
+                cartID.push(element.id)
+                spaces.push(element.spaces) 
+            });
+
+            this.order = {
+                'email': this.order.email,
+                'firstName': this.order.firstName,
+                'phoneNumber': this.order.phoneNumber,
+                'orderID': cartID,
+                'spaces': spaces
             }
+
+            this.newSpaces = {
+                'lesson_ID': cartID,
+                'spaces': spaces
+            }
+
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/collection/placedOrderDB", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.order),
+                })
+            .then(function (response) {
+                response.json().then(
+                    alert("Order Submitted")
+                ) 
+            })
+        
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/collection/lessonsDB", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.newSpaces),
+            })
+
+            this.cart = []
         }
     },
     computed: {
-
-        // validate checkout form
-        validateOrder(){
-            const nameRGEX = /^[A-Za-z]+$/;
-            const phoneRGEX = new RegExp('^[0-9]+$');
-
-            if (nameRGEX.test(this.checkout.name) && phoneRGEX.test(this.checkout.phoneNumber)) {
-                this.checkout.correct = true;  
-            }
-            else { 
-                return this.checkout.correct = false;
-            }
-            return this.checkout.correct;
-        },
-
         // function to sort lessons  
+        
         sortItems() {
             let tempLessons = this.lessons
 
-            // search by title
-            if (this.searchValue != '' && this.searchValue) {
-                tempLessons = tempLessons.filter((item) => {
-                  return item.subject.toUpperCase().includes(this.searchValue.toUpperCase())
-                })
+            // if search bar is empty, return full list of lessons
+            if (this.searchValue == '') {
+                this.fetchLessonData()
             }
+            // if search bar has text, return list of lessons with the specific name
+            else {
+                fetch('https://cst3145-cw2-ginters.herokuapp.com/collection/lessonsDB/' + this.searchValue).then((response) => {
+                    response.json().then((data) => {
+                        app.lessons = data;
+                    })
+                })
+            }    
 
             // sort by subject
             if(this.sortType === 'subject') {
