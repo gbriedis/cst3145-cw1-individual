@@ -1,48 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
 }
 
-.container { 
-    display:flex; 
-    flex-direction:column; 
-    min-height:100vh;
-}
-
-#lesson-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-
-
-.lesson-image {
-    max-width: 10%;
-    float: right;
-}
-
-#lesson-sold-out {
-    color: red;
-}
-
-#back-to-lesson-pointer {
-    cursor: pointer;
-    background-color: rgb(234, 234, 234);
-    padding: 1em;
-}
-
-#sort-div {
-    background-color: blanchedalmond;
-    padding: 1.5em;
-    text-align: center;
-}
-
-#checkout-img{
-    max-width: 5%;
-    padding: 1em;
+#searchIcon {
+    padding-left: 40px;
+    background: url("../img/Search.jpg") no-repeat left;
+    background-size: 16px;
+    background-position: calc(100% - 95%);
 }
